@@ -1,0 +1,14 @@
+1. **git clone <repository-url>**
+   - Description: This command is used to create a local copy of a remote repository. By cloning, you download all the files, branches, and history of the repository to your local machine.
+
+2. **git add <file-name> or git add .**
+   - Description: Adds changes in the working directory to the staging area. You can add individual files by specifying the file name or use `.` to add all modified files.
+
+3. **git commit -m "commit message"**
+   - Description: This command is used to save changes in the staging area to the local repository. The `-m` flag allows you to add a descriptive message for the changes.
+
+4. **git push origin <branch-name>**
+   - Description: Pushes committed changes from your local repository to a remote repository on GitHub. You need to specify the branch name you are pushing to (e.g., `main`, `feature-branch`).
+
+5. **git pull origin <branch-name>**
+   - Description: Fetches changes from the remote repository and merges them into your current branch, ensuring that your local repository is up-to-date with the latest changes from GitHub.
