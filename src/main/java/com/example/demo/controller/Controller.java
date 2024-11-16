@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Constructor; //https://www.programiz.com/java-programming/reflection
+import java.lang.reflect.InvocationTargetException; //In Java, reflection allows us to inspect and manipulate classes, interfaces, constructors, methods, and fields at run time.
 import java.util.Observable;
 import java.util.Observer;
 
@@ -39,16 +39,38 @@ public class Controller implements Observer {
 
 	}
 
+	// @Override
+	// public void update(Observable arg0, Object arg1) {
+	// 	try {
+	// 		goToLevel((String) arg1);
+	// 	} catch (ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException
+	// 			| IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+	// 		Alert alert = new Alert(AlertType.ERROR);
+	// 		alert.setContentText(e.getClass().toString());
+	// 		alert.show();
+	// 	}
+	// }
+
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		try {
 			goToLevel((String) arg1);
 		} catch (ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException
 				| IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setContentText(e.getClass().toString());
+			// Display error with more details
+			Alert alert = new Alert(Alert.AlertType.ERROR);
+			Throwable cause = e.getCause();
+			alert.setContentText(cause != null ? cause.toString() : e.toString());
 			alert.show();
+			
+			// Print stack trace for detailed debugging
+			if (cause != null) {
+				cause.printStackTrace();
+			} else {
+				e.printStackTrace();
+			}
 		}
 	}
+
 
 }

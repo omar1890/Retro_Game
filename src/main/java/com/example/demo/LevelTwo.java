@@ -10,6 +10,7 @@ public class LevelTwo extends LevelParent {
 	public LevelTwo(double screenHeight, double screenWidth) {
 		super(BACKGROUND_IMAGE_NAME, screenHeight, screenWidth, PLAYER_INITIAL_HEALTH);
 		boss = new Boss();
+		System.out.println("Boss initialized: " + boss);
 	}
 
 	@Override
@@ -17,13 +18,32 @@ public class LevelTwo extends LevelParent {
 		getRoot().getChildren().add(getUser());
 	}
 
+	// @Override
+	// protected void checkIfGameOver() {
+	// 	if (userIsDestroyed()) {
+	// 		loseGame();
+	// 	}
+	// 	else if (boss.isDestroyed()) {
+	// 		winGame();
+	// 	}
+	// }
+
+
 	@Override
 	protected void checkIfGameOver() {
+		// If the level is already marked as completed, exit early to prevent repeated logic
+		if (isLevelCompleted()) {
+			return;
+		}
+
 		if (userIsDestroyed()) {
 			loseGame();
-		}
-		else if (boss.isDestroyed()) {
+			setLevelCompleted(true); // Mark level as completed to prevent further updates
+			System.out.println("Game Over!");
+		} else if (boss.isDestroyed()) {
 			winGame();
+			setLevelCompleted(true); // Mark level as completed to prevent further updates
+			System.out.println("You defeated the boss! Congratulations!");
 		}
 	}
 
