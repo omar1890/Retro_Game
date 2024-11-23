@@ -227,11 +227,13 @@ public abstract class LevelParent extends Observable {
 	protected void winGame() {
 		timeline.stop();
 		levelView.showWinImage();
+		SoundPlayer.playWinnerSound();
 	}
 
 	protected void loseGame() {
 		timeline.stop();
 		levelView.showGameOverImage();
+		SoundPlayer.playGameOverSound(); // Play the game over sound
 	}
 
 	protected UserPlane getUser() {
