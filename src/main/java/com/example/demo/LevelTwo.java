@@ -55,8 +55,12 @@ public class LevelTwo extends LevelParent {
 	}
 
 	@Override
+	protected int getLevelNumber() {
+		return 2; // Level 2
+	}
+	@Override
 	protected LevelView instantiateLevelView() {
-		levelView = new LevelViewLevelTwo(getRoot(), PLAYER_INITIAL_HEALTH);
+		levelView = new LevelViewLevelTwo(getRoot(), PLAYER_INITIAL_HEALTH, getLevelNumber());
 		return levelView;
 	}
 

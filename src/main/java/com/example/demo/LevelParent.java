@@ -9,7 +9,10 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.*;
 import javafx.scene.input.*;
+import javafx.scene.text.Font;
 import javafx.util.Duration;
+import javafx.scene.text.Text;
+import javafx.scene.control.Button;
 
 public abstract class LevelParent extends Observable {
 
@@ -66,11 +69,14 @@ public abstract class LevelParent extends Observable {
 		return levelCompleted;
 	}
 	
+	protected abstract int getLevelNumber() ;
+
 	protected void setLevelCompleted(boolean completed) {
 		this.levelCompleted = completed;
 	}
 
 	public Scene initializeScene() {
+		root.getChildren().clear(); // Clear all existing elements
 		initializeBackground();
 		initializeFriendlyUnits();
 		levelView.showHeartDisplay();
@@ -137,6 +143,13 @@ public abstract class LevelParent extends Observable {
 			}
 		});
 		root.getChildren().add(background);
+		// Add the level text after the background
+		Text levelText = new Text("Level: " + getLevelNumber());
+		levelText.setFont(new Font(50));
+		levelText.setFill(javafx.scene.paint.Color.WHITE); // Set a visible color
+		levelText.setX(575); // Position in the top-right corner
+		levelText.setY(50);
+		root.getChildren().add(levelText); // Add the text after the backgroun
 	}
 
 	private void fireProjectile() {
@@ -228,12 +241,15 @@ public abstract class LevelParent extends Observable {
 		timeline.stop();
 		levelView.showWinImage();
 		SoundPlayer.playWinnerSound();
+		showRestartButton();
+
 	}
 
 	protected void loseGame() {
 		timeline.stop();
 		levelView.showGameOverImage();
 		SoundPlayer.playGameOverSound(); // Play the game over sound
+		showRestartButton();
 	}
 
 	protected UserPlane getUser() {
@@ -268,5 +284,18 @@ public abstract class LevelParent extends Observable {
 	private void updateNumberOfEnemies() {
 		currentNumberOfEnemies = enemyUnits.size();
 	}
-
+	private void showRestartButton() {
+		Button restartButton = new Button("Restart Game");
+		restartButton.setLayoutX(screenWidth / 2 - 50); // Center horizontally
+		restartButton.setLayoutY(screenHeight / 2 + 100); // Position below the message
+		restartButton.setOnAction(e -> restartGame());
+		root.getChildren().add(restartButton);
+	}
+	
+	private void restartGame() {
+		root.getChildren().clear(); // Clear current game elements
+		timeline.stop(); // Stop the current timeline
+		setChanged();
+		notifyObservers("com.example.demo.LevelOne");
+	}
 }

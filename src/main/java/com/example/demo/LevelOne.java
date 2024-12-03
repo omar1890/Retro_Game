@@ -60,8 +60,13 @@ public class LevelOne extends LevelParent {
 	}
 
 	@Override
+	protected int getLevelNumber() {
+		return 1; // Level 1
+	}
+
+	@Override
 	protected LevelView instantiateLevelView() {
-		return new LevelView(getRoot(), PLAYER_INITIAL_HEALTH);
+		return new LevelView(getRoot(), PLAYER_INITIAL_HEALTH, getLevelNumber());
 	}
 
 	private boolean userHasReachedKillTarget() {
