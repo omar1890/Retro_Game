@@ -4,11 +4,14 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import javafx.animation.*;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.*;
 import javafx.scene.input.*;
+import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 import javafx.scene.text.Text;
@@ -285,17 +288,68 @@ public abstract class LevelParent extends Observable {
 		currentNumberOfEnemies = enemyUnits.size();
 	}
 	private void showRestartButton() {
-		Button restartButton = new Button("Restart Game");
-		restartButton.setLayoutX(screenWidth / 2 - 50); // Center horizontally
-		restartButton.setLayoutY(screenHeight / 2 + 100); // Position below the message
-		restartButton.setOnAction(e -> restartGame());
-		root.getChildren().add(restartButton);
+		// Restart Level 1 Button
+		Button restartLevel1Button = new Button("Restart Game - Level 1");
+		restartLevel1Button.setOnAction(e -> restartGame("com.example.demo.LevelOne"));
+
+		// Restart Level 2 Button
+		Button restartLevel2Button = new Button("Restart Game - Level 2");
+		restartLevel2Button.setOnAction(e -> restartGame("com.example.demo.LevelTwo"));
+
+		// Stop Game Button
+		Button stopGameButton = new Button("Stop Game");
+		stopGameButton.setOnAction(e -> stopGame());
+
+		// Create an HBox to hold the buttons
+		// Create an HBox for the buttons with spacing
+		HBox buttonMenu = new HBox(20); // 20 is the spacing between buttons
+		buttonMenu.setAlignment(Pos.CENTER); // Center-align the buttons
+		buttonMenu.getChildren().addAll(restartLevel1Button, restartLevel2Button, stopGameButton);
+
+		// Position the HBox in the scene
+		buttonMenu.setLayoutX((screenWidth - 300) / 2); // Adjust 300 based on button sizes
+		buttonMenu.setLayoutY(screenHeight / 2 + 100);
+
+		// Add the HBox to the root node
+		root.getChildren().add(buttonMenu);
+
+
+		// Add the HBox to the root
+		root.getChildren().add(buttonMenu);
 	}
+
 	
-	private void restartGame() {
+	
+	
+	private void restartGame(String levelName) {
 		root.getChildren().clear(); // Clear current game elements
 		timeline.stop(); // Stop the current timeline
 		setChanged();
-		notifyObservers("com.example.demo.LevelOne");
+		notifyObservers(levelName); // Notify observers with the selected level
 	}
+	
+	private void stopGame() {
+		// Stop the timeline (game loop)
+		if (timeline != null) {
+			timeline.stop();
+		}
+
+		// Clear all game elements
+		root.getChildren().clear();
+
+		// Optional: Show a message
+		Text stopMessage = new Text("Game Over. Thank you for playing!");
+		stopMessage.setFont(new Font(40));
+		stopMessage.setFill(javafx.scene.paint.Color.RED);
+		stopMessage.setX(screenWidth / 2 - 150);
+		stopMessage.setY(screenHeight / 2);
+		root.getChildren().add(stopMessage);
+
+		// Optionally, close the application after a short delay
+		PauseTransition delay = new PauseTransition(Duration.seconds(3));
+		delay.setOnFinished(e -> Platform.exit()); // Close the app
+		delay.play();
+	}
+
+	
 }
