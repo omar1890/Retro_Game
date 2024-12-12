@@ -41,6 +41,7 @@ public class LevelOne extends LevelParent {
 		} else if (userHasReachedKillTarget()) {
 			goToNextLevel(NEXT_LEVEL);
 			System.out.println("Next level: " + NEXT_LEVEL);
+			System.out.println("Number of kills" + getUser().getNumberOfKills());
 			setLevelCompleted(true); // Mark level as completed to prevent further updates
 		}
 		updateKillCountDisplay();

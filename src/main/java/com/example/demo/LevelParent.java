@@ -136,24 +136,29 @@ public abstract class LevelParent extends Observable {
 				KeyCode kc = e.getCode();
 				if (kc == KeyCode.UP) user.moveUp();
 				if (kc == KeyCode.DOWN) user.moveDown();
+				if (kc == KeyCode.LEFT) user.moveLeft();
+				if (kc == KeyCode.RIGHT) user.moveRight();
 				if (kc == KeyCode.SPACE) fireProjectile();
 			}
 		});
 		background.setOnKeyReleased(new EventHandler<KeyEvent>() {
 			public void handle(KeyEvent e) {
 				KeyCode kc = e.getCode();
-				if (kc == KeyCode.UP || kc == KeyCode.DOWN) user.stop();
+				if (kc == KeyCode.UP || kc == KeyCode.DOWN) user.stopVerticalMovement();
+				if (kc == KeyCode.LEFT || kc == KeyCode.RIGHT) user.stopHorizontalMovement();
 			}
 		});
 		root.getChildren().add(background);
+	
 		// Add the level text after the background
 		Text levelText = new Text("Level: " + getLevelNumber());
 		levelText.setFont(new Font(50));
 		levelText.setFill(javafx.scene.paint.Color.WHITE); // Set a visible color
 		levelText.setX(575); // Position in the top-right corner
 		levelText.setY(50);
-		root.getChildren().add(levelText); // Add the text after the backgroun
+		root.getChildren().add(levelText); // Add the text after the background
 	}
+	
 
 	private void fireProjectile() {
 		ActiveActorDestructible projectile = user.fireProjectile();
@@ -296,27 +301,28 @@ public abstract class LevelParent extends Observable {
 		Button restartLevel2Button = new Button("Restart Game - Level 2");
 		restartLevel2Button.setOnAction(e -> restartGame("com.example.demo.LevelTwo"));
 
+		Button restartLevel3Button = new Button("Restart Game - Level 3");
+		restartLevel3Button.setOnAction(e -> restartGame("com.example.demo.LevelThree"));
+
 		// Stop Game Button
 		Button stopGameButton = new Button("Stop Game");
 		stopGameButton.setOnAction(e -> stopGame());
 
-		// Create an HBox to hold the buttons
-		// Create an HBox for the buttons with spacing
+		// Create an HBox for the buttons
 		HBox buttonMenu = new HBox(20); // 20 is the spacing between buttons
 		buttonMenu.setAlignment(Pos.CENTER); // Center-align the buttons
-		buttonMenu.getChildren().addAll(restartLevel1Button, restartLevel2Button, stopGameButton);
+		buttonMenu.getChildren().addAll(restartLevel1Button, restartLevel2Button, restartLevel3Button, stopGameButton);
 
 		// Position the HBox in the scene
 		buttonMenu.setLayoutX((screenWidth - 300) / 2); // Adjust 300 based on button sizes
 		buttonMenu.setLayoutY(screenHeight / 2 + 100);
 
-		// Add the HBox to the root node
-		root.getChildren().add(buttonMenu);
-
-
-		// Add the HBox to the root
-		root.getChildren().add(buttonMenu);
+		// Add the HBox to the root node only if it's not already added
+		if (!root.getChildren().contains(buttonMenu)) {
+			root.getChildren().add(buttonMenu);
+		}
 	}
+
 
 	
 	
@@ -338,7 +344,7 @@ public abstract class LevelParent extends Observable {
 		root.getChildren().clear();
 
 		// Optional: Show a message
-		Text stopMessage = new Text("Game Over. Thank you for playing!");
+		Text stopMessage = new Text("We have hope that you have a fun time.");
 		stopMessage.setFont(new Font(40));
 		stopMessage.setFill(javafx.scene.paint.Color.RED);
 		stopMessage.setX(screenWidth / 2 - 150);

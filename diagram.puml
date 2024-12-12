@@ -1,2 +1,37 @@
 @startuml
+class LevelParent {
+    + publicMethod()
+    - privateAttribute
+}
+
+class LevelOne{
+    + publicMethod()
+    - privateAttribute
+}
+LevelParent <|-- LevelOne
+
+class LevelParent {
+    + publicMethod()
+    - privateAttribute
+}
+
+class LevelTwo{
+    + publicMethod()
+    - privateAttribute
+}
+LevelParent <|-- LevelOne
+@enduml
+
+
+@startuml
+class LevelParent {
+    + publicMethod()
+    - privateAttribute
+}
+
+class LevelOne{
+    + publicMethod()
+    - privateAttribute
+}
+LevelParent <|-- LevelOne
 @enduml

@@ -2,8 +2,9 @@ package com.example.demo;
 
 public class LevelTwo extends LevelParent {
 
-	private static final String BACKGROUND_IMAGE_NAME = "/com/example/demo/images/background4.jpg";
+	private static final String BACKGROUND_IMAGE_NAME = "/com/example/demo/images/background1.jpg";
 	private static final int PLAYER_INITIAL_HEALTH = 5;
+	private static final String NEXT_LEVEL = "com.example.demo.LevelThree";
 	private final Boss boss;
 	private LevelViewLevelTwo levelView;
 
@@ -41,9 +42,12 @@ public class LevelTwo extends LevelParent {
 			setLevelCompleted(true); // Mark level as completed to prevent further updates
 			System.out.println("Game Over!");
 		} else if (boss.isDestroyed()) {
-			winGame();
-			setLevelCompleted(true); // Mark level as completed to prevent further updates
+			goToNextLevel(NEXT_LEVEL); // Transition to LevelThree
+			setLevelCompleted(true);
 			System.out.println("You defeated the boss! Congratulations!");
+			// winGame();
+			// setLevelCompleted(true); // Mark level as completed to prevent further updates
+			// System.out.println("You defeated the boss! Congratulations!");
 		}
 	}
 
